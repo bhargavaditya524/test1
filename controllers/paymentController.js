@@ -12,25 +12,8 @@ const razorpay = new Razorpay({
 
 export const checkout = async (req, res) => {
   try {
-   
-    const { amount } = req.body; // amount in paise
-    console.log("Checkout amount:", amount);
-
-    if (!amount || amount <= 0) {
-      return res.status(400).json({ success: false, message: "Invalid amount" });
-    }
-console.log("Request body:", req.body);
-console.log("Amount received:", req.body.amount);
-
-    const options = {
-      amount: amount,
-      currency: "INR",
-      receipt: `rcpt_${Date.now()}`,
-      payment_capture: 1,
-    };
-
+    const options = { amount: 50000, currency: "INR" };
     const order = await razorpay.orders.create(options);
-    console.log("Created order:", order);
 
     res.status(200).json({ success: true, order });
   } catch (error) {
@@ -38,8 +21,6 @@ console.log("Amount received:", req.body.amount);
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
-
 
 export const verifyPayment = (req, res) => {
   const {
